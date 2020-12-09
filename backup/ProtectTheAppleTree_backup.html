@@ -1,0 +1,263 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>ZIM Group Project - War of Worms</title>
+
+<!-- Welcome to ZIM at https://zimjs.com - Code Creativity!                              -->
+<!-- ZIM runs on the HTML Canvas powered by JavaScript and CreateJS https://createjs.com -->
+<!-- ZIM is free to use. You can donate to help improve ZIM at https://zimjs.com/donate  -->
+
+<script src="https://zimjs.org/cdn/1.3.2/createjs.js"></script>
+<script src="https://zimjs.org/cdn/cat/02/zim.js"></script>
+<!-- use zimjs.com/distill for minified individual functions! -->
+
+<script>
+
+// SCALING OPTIONS
+// scaling can have values as follows with full being the default
+// "fit"	sets canvas and stage to dimensions and scales to fit inside window size
+// "outside"	sets canvas and stage to dimensions and scales to fit outside window size
+// "full"	sets stage to window size with no scaling
+// "tagID"	add canvas to HTML tag of ID - set to dimensions if provided - no scaling
+
+const scaling = "fit"; // this will resize to fit inside the screen dimensions
+const width = 1024;
+const height = 768;
+const color = light; // ZIM colors like green, blue, pink, faint, clear, etc.
+const outerColor = dark; // any HTML colors like "violet", "#333", etc. are fine to use
+
+const frame = new Frame(scaling, width, height, color, outerColor);
+frame.on("ready", () => { // ES6 Arrow Function - like function(){}
+    zog("ready from ZIM Frame"); // logs in console (F12 - choose console)
+
+    const stage = frame.stage;
+    let stageW = frame.width;
+    let stageH = frame.height;
+
+    // see https://zimjs.com/learn.html for video and code tutorials
+    // see https://zimjs.com/docs.html for documentation
+    // see https://zimjs.com/bits.html for 64 Interactive Media techniques
+
+    // *** NOTE: ZIM Cat defaults to time in seconds
+    // All previous versions, examples, videos, etc. have time in milliseconds
+    // This can be set back with TIME = "milliseconds" but we suggest you give it a try!
+    // There will be a warning in the conslole if your animation is not moving ;-)
+
+    // put your code here (you can delete this sample code)
+    // container as the tree asset size (use asset instead of Rectangle for final)
+    const tree = new Rectangle(stageW, stageH);
+    //zog (tree.width, tree.height);
+    const treeStage = new Container(tree.width, tree.height).addTo();
+
+    // with chaining - can also assign to a variable for later access
+    const pestSpray = new Rectangle(80, 120, purple).centerReg();
+    const pestBugColor = ["black","red","orange"];
+    const beneInsectColor = ["red","green","yellow"];
+    const bugLife = 24;
+
+    const pestBug = new Rectangle({
+        width:30,
+        height:30,
+        color:shuffle(pestBugColor)
+    }).addTo(treeStage).bot().noMouse();
+    
+    const beneInsect = new Circle({
+        radius:15,
+        color:shuffle(beneInsectColor)
+    }).addTo().bot().noMouse();
+
+    const pestBottle = new MotionController({
+       target:pestSpray,
+       type:"mousemove",
+       diagonal:true,
+       damp:.1,
+       rotate:false,
+       speed:20
+    });
+
+    // frame.on("keydown", e => {
+    //     if(e.keyCode == 32){
+    //         pestPath.recordPoints(true);//true here means use a pane to show points
+    //     }
+    //
+    //
+    // });
+
+    const pestPath = new Squiggle({
+    points:
+    [[-274.4,-179.2,0,0,-30,0,30,0],
+    [-225.5,57.2,0,0,-21,-38.6,21,38.6],
+    [0.8,139,0,0,-96.1,15.9,74.3,-12.3],
+    [23.2,-22.1,0,0,50,35.8,-50,-35.8],
+    [-72.8,155.1,0,0,-101.7,-66.2,50,32.5],
+    [192.3,-64.7,0,0,-113.8,60.1,41.1,-21.7],
+    [327.5,26,0,0,-6.3,-70.1,6.3,70.1],
+    [176.5,216.4,0,0,94.2,26.2,-94.2,-26.2],
+    [107.4,-109,0,0,-44.1,199,44.1,-199],
+    [238.5,-299.1,0,0,-32.2,11.6,32.2,-11.6],
+    [292.2,-202.7,0,0,24.2,-30.2,-24.2,30.2],
+    [-167.4,-168.6,0,0,151.4,42.7,-25.9,-7.3],
+    [-102.2,-297.4,0,0,-63.5,37.8,29.5,-17.6],
+    [90.8,-255.8,0,0,-109.5,-75.2,66.7,45.8],
+    [-169.9,-32.2,0,0,82.4,9.1,-82.4,-9.1],
+    [-243.2,-188.9,0,0,1.9,0,-133,1.5]]
+}).center().mov(60,10).rot(-10);
+    pestPath.visible = false;
+    const beneInsectPath = new Squiggle({
+    points:
+    [[447.9,-215.6,0,0,-30,0,14.4,0],
+    [406.8,-40.5,0,0,86.6,-60.2,-45.6,31.8],
+    [100.7,-155.9,0,0,-115.4,131.3,115.4,-131.3],
+    [506.3,66,0,0,-22.5,-128.1,22.5,128.1],
+    [391.3,201.9,0,0,0,0,0,0,"none"],
+    [250.6,72,0,0,-36,92,36,-92],
+    [390.4,89.1,0,0,-1,-47.9,1,47.9],
+    [143,177.3,0,0,153.4,15.7,-52.6,-5.4],
+    [-34.4,89.6,0,0,40.2,63.9,-40.2,-63.9],
+    [78.2,-16.1,0,0,-51.8,-36.4,23.1,16.3],
+    [99.3,127,0,0,80.4,-48.4,-45,27.1],
+    [-128.7,173.4,0,0,130.5,27.9,-130.5,-27.9],
+    [-235.1,-85.9,0,0,-23,71.1,23,-71.1],
+    [-33,-166,0,0,-82.1,-97.4,82.1,97.4],
+    [-319.8,18,0,0,-0.1,0,30,0]]
+}).center();
+    beneInsectPath.visible = false;
+
+    pestBug.animate({
+             props:{path: pestPath},
+             ease:"linear",
+             time:30,
+             loop:true,
+             rewind:true,
+         });
+
+    // var pestBugClone = function (){
+    //     pestBug.clone().addTo(treeStage).bot().noMouse().animate({
+    //              props:{path: pestPath},
+    //              ease:"linear",
+    //              time:30,
+    //              loop:true,
+    //              rewind:true,
+    //          });
+    // }
+
+    //  interval(2,() => {
+    //      pestBugClone();
+
+    //  });
+
+    // const pestArray = [];
+
+    interval(5,() => {
+        pestBug.clone().addTo(treeStage).bot().noMouse().animate({
+                 props:{path: pestPath},
+                 ease:"linear",
+                 time:30,
+                 loop:true,
+                 rewind:true,
+        });
+    });
+
+     beneInsect.animate({
+              props:{path: beneInsectPath},
+              ease:"linear",
+              time:30,
+              loop:true,
+              rewind:true,
+          });
+
+     var beneInsectClone = function (){
+         beneInsect.clone().addTo().bot().noMouse().animate({
+                  props:{path: beneInsectPath},
+                  ease:"linear",
+                  time:30,
+                  loop:true,
+                  rewind:true,
+              });
+     }
+
+    //   interval(8,() => {
+    //       beneInsectClone();
+
+    //   });
+
+    // let pestBugLife = pestBug.life;
+    // pestBugLife = bugLife;
+
+    // stage.on("click", ()=>{
+    //     loop(pestArray, (pest, i)=> {
+    //         zog(pest[i]);
+    //     });
+    // });
+
+       
+
+    // Ticker.add( ()=>{ 
+    //     if(pestSpray.hitTestBounds(pestBug, -20)) {
+    //         //zog("hit test pestBottle and pestBug");
+    //         //zog(pestBugLife);
+    //         if (pestBugLife >= 0) {
+    //             zog ("pest bug is dying");
+    //             pestBugLife--;
+    //         }else{
+    //             zog ("pest bug is dead");
+    //             pestBug.removeFrom(treeStage);
+    //             stage.update();
+    //             }
+    //     }
+    // }, treeStage);    
+
+    pestSpray.on("mousedown", e=>{
+        // let pestBugLife = e.target.life;
+        // pestBugLife = bugLife;
+        treeStage.loop( pest=>{
+            if (pest == e.target) return;
+            if (pest.hitTestBounds(pestSpray, 20)) {
+                // if (pestBugLife >= 0) {
+                // zog ("pest bug is dying");
+                // pestBugLife--;
+                // zog (pestBugLife);
+                // }else{
+                // zog ("pest bug is dead");
+                pest.removeFrom(treeStage);
+                stage.update();
+                // }  
+            }
+        }, true);
+    });
+        // if(pestSpray.hitTestBounds(e.target, -20)) {
+        //     zog("hit test pestBottle and pestBugClones");
+            //zog(pestBugLife);
+        //     if (pestBugCloneLife >= 0) {
+        //         zog ("pest bug is dying");
+        //         pestBugCloneLife--;
+        //     }else{
+        //         zog ("pest bug is dead");
+        //         pestArray[0].removeFrom(treeStage);
+        //         stage.update();
+        //         }
+        // }
+    // }, treeStage);
+
+    // circles - container
+    // circles.loop(circle=>{
+    //     if (circle == e.target) return;
+    //     if (e.target.hitTestCircles(circle)) circle.removeFrom();
+    // }, true);
+
+
+    stage.update(); // this is needed to show any changes
+
+}); // end of ready
+
+</script>
+
+<meta name="viewport" content="width=device-width, user-scalable=no" />
+
+</head>
+
+<body>
+<!-- canvas with id="myCanvas" is made by zim Frame -->
+</body>
+</html>
