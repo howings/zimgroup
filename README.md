@@ -1,4 +1,4 @@
-# zimgroup
+# War of Worms
 Zim.js group project. 
 
 Project Information: 
